@@ -24,11 +24,11 @@ const StripeComponents = ({
       </Box>
       <Box className="flex ">
         <Box className="w-1/2 mr-2">
-          <Label> Card Number </Label>
+          <Label> Card Expiry </Label>
           <CardExpiryElement className="border border-black p-2 rounded-sm" />
         </Box>
         <Box className="w-1/2">
-          <Label> Card Number </Label>
+          <Label> Security Code (CVC) </Label>
           <CardCvcElement className="border border-black p-2 rounded-sm" />
         </Box>
       </Box>

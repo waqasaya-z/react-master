@@ -15,6 +15,12 @@ import CustomCard from "@/components/common/CustomCard";
 import StripeComponents from "./StripeComponents";
 import { PaymentRequest } from "@stripe/stripe-js";
 import StripeIcon from "@/icons/StripeIcon";
+import {
+  STRIPE_CARD_DESCRIPTION,
+  STRIPE_CARD_ERROR,
+  STRIPE_CARD_SUCCESS,
+  STRIPE_CARD_TITLE,
+} from "../utils/common.constant";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -33,7 +39,7 @@ const CheckoutForm = () => {
       currency: "usd",
       total: {
         label: "Total",
-        amount: 2000, 
+        amount: 2000,
       },
       requestPayerName: true,
       requestPayerEmail: true,
@@ -70,11 +76,11 @@ const CheckoutForm = () => {
 
       if (error) {
         event.complete("fail");
-        alert(error.message);
+        toast.error(error?.message ?? STRIPE_CARD_ERROR);
       } else {
         event.complete("success");
         if (paymentIntent.status === "succeeded") {
-          alert("✅ Payment successful with Apple/Google Pay!");
+          toast.success(STRIPE_CARD_SUCCESS);
         }
       }
     });
@@ -105,9 +111,9 @@ const CheckoutForm = () => {
     });
 
     if (result.error) {
-      toast.error(result.error.message ?? "Payment failed");
+      toast.error(result.error.message ?? STRIPE_CARD_ERROR);
     } else if (result.paymentIntent?.status === "succeeded") {
-      toast.success("Payment successful");
+      toast.success(STRIPE_CARD_SUCCESS);
 
       elements.getElement(CardNumberElement)?.clear();
       elements.getElement(CardExpiryElement)?.clear();
@@ -127,15 +133,12 @@ const CheckoutForm = () => {
               tag="h1"
               className="text-xl font-extrabold tracking-tight text-balance"
             >
-              Checkout
+              {STRIPE_CARD_TITLE}
             </Box>
           }
           description={
-               <Box
-              tag="p"
-              className="font-medium tracking-tight text-balance"
-            >
-              Please choose a payment method.
+            <Box tag="p" className="font-medium tracking-tight text-balance">
+              {STRIPE_CARD_DESCRIPTION}
             </Box>
           }
           action={<StripeIcon size={48} />}

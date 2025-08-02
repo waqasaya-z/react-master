@@ -1,5 +1,5 @@
 import CheckoutPage from "@/components/pages/checkout/CheckoutPage";
-import StripeProvider from "@/context/StripeProvider";
+import StripeProvider from "@/providers/StripeProvider";
 import React from "react";
 
 const page = () => {
