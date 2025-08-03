@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "../common/Box";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -6,21 +6,57 @@ import { Separator } from "../ui/separator";
 import GoogleIcon from "@/icons/GoogleIcon";
 import GithubIcon from "@/icons/GithubIcon";
 import { signIn } from "next-auth/react";
+import { signInSchema } from "@/validation/auth";
 
 const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = signInSchema.safeParse(formData);
+
+    if (!result.success) {
+      const formatted = result.error.format();
+      setErrors({
+        email: formatted.email?._errors?.[0],
+        password: formatted.password?._errors?.[0],
+      });
+    } else {
+      setErrors({});
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Box className="flex flex-col gap-2">
         <Box>
-          <Input placeholder="Email" />
+          <Input
+            name="email"
+            placeholder="Email"
+            type="email"
+            onChange={handleChange}
+            className={` ${errors.email ? "border border-red-600" : ""} `}
+          />
         </Box>
         <Box>
-          <Input placeholder="Password" />
+          <Input
+            name="password"
+            placeholder="Password"
+            type="password"
+            onChange={handleChange}
+            className={` ${errors.password ? "border border-red-600" : ""} `}
+          />
         </Box>
         <Box>
           <Button className="min-w-full cursor-pointer" type="submit">
-            {" "}
-            Login{" "}
+            Login
           </Button>
         </Box>
         <Box className="relative my-4">

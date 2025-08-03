@@ -15,11 +15,18 @@ import Modal from "./Modal/Modal";
 import AuthComponent from "../auth/AuthComponent";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
+import DropdownMenuOptions from "./DropdownMenuOptions";
+import AccountDropdown from "../auth/AccountDropdown";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
   const [openAuthModal, setOpenAuthModal] = React.useState(false);
+  const [openDropdownMenu, setOpenDropdownMenu] = React.useState(false);
   const pathName = usePathname();
+
+  const handleDropdown = () => {
+    setOpenDropdownMenu(!openDropdownMenu);
+  };
 
   const handleModal = () => {
     setOpenAuthModal(!openAuthModal);
@@ -57,9 +64,22 @@ const Navbar = () => {
         {status === "loading" ? (
           <Skeleton />
         ) : session ? (
-          <NavigationMenuLink className="mr-12 cursor-pointer">
-            {session.user?.name}
-          </NavigationMenuLink>
+          <>
+            <DropdownMenuOptions
+              open={openDropdownMenu}
+              onClose={handleDropdown}
+              label="My Account"
+              trigger={
+                <NavigationMenuLink
+                  className="mr-12 cursor-pointer"
+                  onClick={handleDropdown}
+                >
+                  {session.user?.name}
+                </NavigationMenuLink>
+              }
+              children={<AccountDropdown />}
+            />
+          </>
         ) : null}
       </NavigationMenu>
       <Modal
