@@ -8,26 +8,66 @@ import {
 } from "../ui/navigation-menu";
 import navRoutes from "@/helper/common.routes";
 import { usePathname } from "next/navigation";
+import NextLink from "./NextLink";
+import { cn } from "@/lib/utils";
+import Box from "./Box";
+import Modal from "./Modal/Modal";
+import AuthComponent from "../auth/AuthComponent";
+import { useSession } from "next-auth/react";
+import { Skeleton } from "../ui/skeleton";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
+  const [openAuthModal, setOpenAuthModal] = React.useState(false);
   const pathName = usePathname();
 
+  const handleModal = () => {
+    setOpenAuthModal(!openAuthModal);
+  };
+
   return (
-    <NavigationMenu className="bg-black p-2.5 text-white">
-      <NavigationMenuList>
-        {navRoutes.map((route) => {
-          return (
-            <NavigationMenuLink
-            key={route.path}
-              href={route.path}
-              active={pathName === route.path}
-            >
-              {route.name}
-            </NavigationMenuLink>
-          );
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+    <>
+      <NavigationMenu className="bg-black py-2.5 text-white flex items-center justify-between">
+        <NavigationMenuLink> </NavigationMenuLink>
+        <NavigationMenuList>
+          {navRoutes.map((route) => {
+            return (
+              <NavigationMenuLink key={route.path} asChild>
+                <NextLink
+                  href={route.path}
+                  className={cn(
+                    "px-4 py-2 rounded-md hover:bg-white hover:text-black transition-colors",
+                    route.path === pathName && "bg-white text-black"
+                  )}
+                >
+                  {route.name}
+                </NextLink>
+              </NavigationMenuLink>
+            );
+          })}
+        </NavigationMenuList>
+        {!session && (
+          <NavigationMenuLink
+            className="mr-12 cursor-pointer"
+            onClick={handleModal}
+          >
+            Login
+          </NavigationMenuLink>
+        )}
+        {status === "loading" ? (
+          <Skeleton />
+        ) : session ? (
+          <NavigationMenuLink className="mr-12 cursor-pointer">
+            {session.user?.name}
+          </NavigationMenuLink>
+        ) : null}
+      </NavigationMenu>
+      <Modal
+        open={openAuthModal}
+        onClose={handleModal}
+        content={<AuthComponent />}
+      />
+    </>
   );
 };
 

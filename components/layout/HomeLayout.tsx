@@ -6,11 +6,11 @@ import { AuthProvider } from "@/providers/SessionProvider";
 const HomeLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <Navbar />
       <AuthProvider>
-        <div className="bg-neutral-900 text-white h-screen">{children}</div>
+        <Navbar />
+        <div className="bg-neutral-900 text-white">{children}</div>
+        <Toaster position="top-right" />
       </AuthProvider>
-      <Toaster position="top-right" />
     </>
   );
 };

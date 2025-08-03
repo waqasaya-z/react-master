@@ -1,5 +1,4 @@
 import React from "react";
-import StripeSvg from "@/public/svg/stripe.svg";
 import { createIcon } from "./createIcon";
 
 const StripeIcon = createIcon(

@@ -1,9 +1,20 @@
-import React from 'react'
+import Box from "@/components/common/Box";
+import { auth } from "@/lib/auth";
+import React from "react";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const session = await auth();
+  console.log("Sesssion", session);
+
+  if (!session) {
+    return null;
+  }
+
   return (
-    <div>HomePage</div>
-  )
-}
+    <Box className="flex h-80">
+      <Box tag="h1" className="font-extrabold text-6xl my-auto pl-5" > Welcome, {session.user?.name}! </Box>
+    </Box>
+  );
+};
 
-export default HomePage
+export default HomePage;
