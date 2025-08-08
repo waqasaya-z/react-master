@@ -1,4 +1,4 @@
-name: Next.js CI
+name: Next.js CI & Deploy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
           cache: "npm"
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: 🧪 Run Tests
         run: npm test
@@ -51,5 +51,8 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
+      - name: 🔗 Link Vercel Project
+        run: npx vercel link --project=${{ secrets.VERCEL_PROJECT_NAME }} --scope=${{ secrets.VERCEL_ORG_SLUG }} --token=${{ secrets.VERCEL_TOKEN }} --yes
+
       - name: 🚀 Deploy to Vercel
-        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --confirm
+        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_SLUG }} --confirm
