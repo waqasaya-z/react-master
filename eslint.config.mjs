@@ -36,14 +36,6 @@ export default tseslint.config(
       ...reactHooksPlugin.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       'react/no-children-prop': 'off',
-      'import/order': [
-        'error',
-        {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          alphabetize: { order: 'asc', caseInsensitive: true },
-          'newlines-between': 'always',
-        },
-      ],
       'security/detect-object-injection': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
