@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function POST(req: Request) {
-  const { name, email, password } = await req.json();
+  const { firstName, lastName, email, password } = await req.json();
   if (!email || !password) {
     return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
   }
@@ -17,7 +17,8 @@ export async function POST(req: Request) {
 
     const user = await prisma.user.create({
       data: {
-        name,
+        firstName,
+        lastName,
         email,
         password: hashedPassport,
       },
