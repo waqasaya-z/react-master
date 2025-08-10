@@ -1,17 +1,11 @@
+import React from 'react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 interface IDropdownMenu {
   open: boolean;
@@ -21,13 +15,7 @@ interface IDropdownMenu {
   label?: string;
 }
 
-function DropdownMenuOptions({
-  onClose,
-  open,
-  trigger,
-  children,
-  label,
-}: IDropdownMenu) {
+function DropdownMenuOptions({ onClose, open, trigger, children, label }: IDropdownMenu) {
   return (
     <DropdownMenu open={open} onOpenChange={(open) => !open && onClose()}>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>

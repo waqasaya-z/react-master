@@ -1,22 +1,20 @@
-"use client";
+'use client';
 
-import React from "react";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuLink,
-} from "../ui/navigation-menu";
-import navRoutes from "@/helper/common.routes";
-import { usePathname } from "next/navigation";
-import NextLink from "./NextLink";
-import { cn } from "@/lib/utils";
-import Box from "./Box";
-import Modal from "./Modal/Modal";
-import AuthComponent from "../auth/AuthComponent";
-import { useSession } from "next-auth/react";
-import { Skeleton } from "../ui/skeleton";
-import DropdownMenuOptions from "./DropdownMenuOptions";
-import AccountDropdown from "../auth/AccountDropdown";
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import React from 'react';
+
+import AccountDropdown from '../auth/AccountDropdown';
+import AuthComponent from '../auth/AuthComponent';
+import { NavigationMenu, NavigationMenuList, NavigationMenuLink } from '../ui/navigation-menu';
+import { Skeleton } from '../ui/skeleton';
+
+import DropdownMenuOptions from './DropdownMenuOptions';
+import Modal from './Modal/Modal';
+import NextLink from './NextLink';
+
+import navRoutes from '@/helper/common.routes';
+import { cn } from '@/lib/utils';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -43,8 +41,8 @@ const Navbar = () => {
                 <NextLink
                   href={route.path}
                   className={cn(
-                    "px-4 py-2 rounded-md hover:bg-white hover:text-black transition-colors",
-                    route.path === pathName && "bg-white text-black"
+                    'px-4 py-2 rounded-md hover:bg-white hover:text-black transition-colors',
+                    route.path === pathName && 'bg-white text-black',
                   )}
                 >
                   {route.name}
@@ -54,14 +52,11 @@ const Navbar = () => {
           })}
         </NavigationMenuList>
         {!session && (
-          <NavigationMenuLink
-            className="mr-12 cursor-pointer"
-            onClick={handleModal}
-          >
+          <NavigationMenuLink className="mr-12 cursor-pointer" onClick={handleModal}>
             Login
           </NavigationMenuLink>
         )}
-        {status === "loading" ? (
+        {status === 'loading' ? (
           <Skeleton />
         ) : session ? (
           <>
@@ -70,10 +65,7 @@ const Navbar = () => {
               onClose={handleDropdown}
               label="My Account"
               trigger={
-                <NavigationMenuLink
-                  className="mr-12 cursor-pointer"
-                  onClick={handleDropdown}
-                >
+                <NavigationMenuLink className="mr-12 cursor-pointer" onClick={handleDropdown}>
                   {session.user?.name}
                 </NavigationMenuLink>
               }
@@ -82,11 +74,7 @@ const Navbar = () => {
           </>
         ) : null}
       </NavigationMenu>
-      <Modal
-        open={openAuthModal}
-        onClose={handleModal}
-        content={<AuthComponent />}
-      />
+      <Modal open={openAuthModal} onClose={handleModal} content={<AuthComponent />} />
     </>
   );
 };

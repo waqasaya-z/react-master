@@ -1,21 +1,24 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import HomeLayout from "@/components/layout/HomeLayout";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import React from 'react';
+
+import './globals.css';
+
+import HomeLayout from '@/components/layout/HomeLayout';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "React Stripe App",
-  description: "React Stripe App using Next.js",
+  title: 'React Stripe App',
+  description: 'React Stripe App using Next.js',
 };
 
 export default function RootLayout({
@@ -25,9 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-900`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-900`}>
         <HomeLayout>{children}</HomeLayout>
       </body>
     </html>

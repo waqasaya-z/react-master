@@ -1,13 +1,14 @@
-import Box from "@/components/common/Box";
-import Label from "@/components/common/Typography/Label";
 import {
   CardCvcElement,
   CardExpiryElement,
   CardNumberElement,
   PaymentRequestButtonElement,
-} from "@stripe/react-stripe-js";
-import { PaymentRequest } from "@stripe/stripe-js";
-import React from "react";
+} from '@stripe/react-stripe-js';
+import type { PaymentRequest } from '@stripe/stripe-js';
+import React from 'react';
+
+import Box from '@/components/common/Box';
+import Label from '@/components/common/Typography/Label';
 
 const StripeComponents = ({
   paymentRequest,

@@ -1,44 +1,45 @@
-"use client";
+'use client';
 
-import Box from "@/components/common/Box";
-import { Button } from "@/components/ui/button";
 import {
   CardCvcElement,
   CardExpiryElement,
   CardNumberElement,
   useElements,
   useStripe,
-} from "@stripe/react-stripe-js";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
-import CustomCard from "@/components/common/CustomCard";
-import StripeComponents from "./StripeComponents";
-import { PaymentRequest } from "@stripe/stripe-js";
-import StripeIcon from "@/icons/StripeIcon";
+} from '@stripe/react-stripe-js';
+import type { PaymentRequest } from '@stripe/stripe-js';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
 import {
   STRIPE_CARD_DESCRIPTION,
   STRIPE_CARD_ERROR,
   STRIPE_CARD_SUCCESS,
   STRIPE_CARD_TITLE,
-} from "../utils/common.constant";
+} from '../utils/common.constant';
+
+import StripeComponents from './StripeComponents';
+
+import Box from '@/components/common/Box';
+import CustomCard from '@/components/common/CustomCard';
+import { Button } from '@/components/ui/button';
+import StripeIcon from '@/icons/StripeIcon';
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
-  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(
-    null
-  );
+  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
 
   useEffect(() => {
     if (!stripe) return;
 
     const pr = stripe.paymentRequest({
-      country: "US",
-      currency: "usd",
+      country: 'US',
+      currency: 'usd',
       total: {
-        label: "Total",
+        label: 'Total',
         amount: 2000,
       },
       requestPayerName: true,
@@ -58,28 +59,25 @@ const CheckoutForm = () => {
   useEffect(() => {
     if (!paymentRequest || !stripe) return;
 
-    paymentRequest.on("paymentmethod", async (event) => {
-      const res = await fetch("/api/create-payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: 2000, currency: "usd" }),
+    paymentRequest.on('paymentmethod', async (event) => {
+      const res = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 2000, currency: 'usd' }),
       });
 
       const { clientSecret } = await res.json();
 
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: event.paymentMethod.id,
-        }
-      );
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: event.paymentMethod.id,
+      });
 
       if (error) {
-        event.complete("fail");
+        event.complete('fail');
         toast.error(error?.message ?? STRIPE_CARD_ERROR);
       } else {
-        event.complete("success");
-        if (paymentIntent.status === "succeeded") {
+        event.complete('success');
+        if (paymentIntent.status === 'succeeded') {
           toast.success(STRIPE_CARD_SUCCESS);
         }
       }
@@ -92,12 +90,12 @@ const CheckoutForm = () => {
 
     if (!stripe || !elements) return;
 
-    const res = await fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         amount: 2000,
-        currency: "usd",
+        currency: 'usd',
       }),
     });
 
@@ -112,7 +110,7 @@ const CheckoutForm = () => {
 
     if (result.error) {
       toast.error(result.error.message ?? STRIPE_CARD_ERROR);
-    } else if (result.paymentIntent?.status === "succeeded") {
+    } else if (result.paymentIntent?.status === 'succeeded') {
       toast.success(STRIPE_CARD_SUCCESS);
 
       elements.getElement(CardNumberElement)?.clear();
@@ -129,10 +127,7 @@ const CheckoutForm = () => {
         <CustomCard
           className="flex flex-col justify-between gap-12 hover:shadow-black hover:shadow-lg transition-shadow duration-300 border-2 border-black"
           title={
-            <Box
-              tag="h1"
-              className="text-xl font-extrabold tracking-tight text-balance"
-            >
+            <Box tag="h1" className="text-xl font-extrabold tracking-tight text-balance">
               {STRIPE_CARD_TITLE}
             </Box>
           }
@@ -143,14 +138,11 @@ const CheckoutForm = () => {
           }
           action={<StripeIcon size={48} />}
           content={
-            <StripeComponents
-              paymentRequest={paymentRequest}
-              canMakePayment={canMakePayment}
-            />
+            <StripeComponents paymentRequest={paymentRequest} canMakePayment={canMakePayment} />
           }
           footer={
             <Button type="submit" className="cursor-pointer w-full ">
-              {loading ? "Processing…" : "Pay $20"}
+              {loading ? 'Processing…' : 'Pay $20'}
             </Button>
           }
         />
