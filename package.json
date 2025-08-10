@@ -5,15 +5,17 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
-    "start": "next start",
+    "start": "npm run migrate:deploy && next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "test": "echo \"No tests yet\" && exit 0"
+    "test": "echo \"No tests yet\" && exit 0",
+    "analyze": "ANALYZE=true npm run build",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ]
   },
   "dependencies": {
@@ -42,6 +44,7 @@
     "zod": "^4.0.14"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.4.6",
     "@next/eslint-plugin-next": "^15.4.6",
     "@prisma/client": "^6.13.0",
     "@tailwindcss/postcss": "^4",
