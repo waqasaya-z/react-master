@@ -13,7 +13,7 @@ import React from "react";
 interface IModal {
   open: boolean;
   onClose: () => void;
-  title?: string;
+  title?: string | React.ReactNode; 
   description?: string;
   content: React.ReactNode;
   footer?: React.ReactNode;

@@ -15,6 +15,7 @@ import NextLink from './NextLink';
 
 import navRoutes from '@/helper/common.routes';
 import { cn } from '@/lib/utils';
+import Box from './Box';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -74,7 +75,7 @@ const Navbar = () => {
           </>
         ) : null}
       </NavigationMenu>
-      <Modal open={openAuthModal} onClose={handleModal} content={<AuthComponent />} />
+      <Modal open={openAuthModal} onClose={handleModal} content={<AuthComponent />} title={<Box tag='h2' className='font-bold'> Get Started. </Box>} />
     </>
   );
 };
